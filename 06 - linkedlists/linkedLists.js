@@ -13,22 +13,26 @@ class LinkedList {
   append(value) {
     if (this.head === null) {
       this.head = new Node(value)
+      return
     } else {
       let current = this.head
       while (current.next !== null) {
         current = current.next
       }
       current.next = new Node(value)
+      return
     }
   }
 
   prepend(value) {
     if (this.head === null) {
       this.head = new Node(value)
+      return
     } else {
       let newNode = new Node(value)
       newNode.next = this.head
       this.head = newNode
+      return
     }
   }
 
@@ -100,6 +104,7 @@ class LinkedList {
     }
 
     previous.next = null
+    return
   }
 
   contains(value) {
@@ -153,14 +158,20 @@ class LinkedList {
     }
     let length = this.size()
 
-    if (index < 0 || index > length) {
-      return `Index must be between 0 and ${length}`
+    if (index < 0 || index > length - 1) {
+      return `Index must be between 0 and ${length - 1}`
+    }
+
+    if (index === length) {
+      this.append(value)
+      return
     }
 
     const newNode = new Node(value)
     let previousNode = this.at(index - 1)
     newNode.next = previousNode.next
     previousNode.next = newNode
+    return
   }
 
   removeAt(index) {
@@ -169,11 +180,17 @@ class LinkedList {
     }
 
     let length = this.size()
-    if (index < 0 || index > length) {
-      return `Index must be between 0 and ${length}`
+    if (index < 0 || index > length - 1) {
+      return `Index must be between 0 and ${length - 1}`
+    }
+
+    if (index === length - 1) {
+      this.pop()
+      return
     }
 
     const previousNode = this.at(index - 1)
     previousNode.next = previousNode.next.next
+    return
   }
 }
