@@ -11,10 +11,6 @@ class Queue {
   dequeue() {
     return this.#nodes.shift()
   }
-
-  getNode(index) {
-    return this.#nodes[index]
-  }
 }
 
 const myQueue = new Queue()
