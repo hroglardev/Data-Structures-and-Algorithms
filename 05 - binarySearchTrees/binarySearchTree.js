@@ -19,6 +19,10 @@ class Queue {
   peek() {
     return this.#nodes[0]
   }
+
+  isEmpty() {
+    return this.#nodes.length === 0
+  }
 }
 
 class BinarySearchTree {

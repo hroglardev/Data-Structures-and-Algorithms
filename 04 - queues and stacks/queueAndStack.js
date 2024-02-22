@@ -11,6 +11,18 @@ class Queue {
   dequeue() {
     return this.#nodes.shift()
   }
+
+  size() {
+    return this.#nodes.length
+  }
+
+  peek() {
+    return this.#nodes[0]
+  }
+
+  isEmpty() {
+    return this.#nodes.length === 0
+  }
 }
 
 const myQueue = new Queue()
@@ -28,5 +40,16 @@ class Stack {
   }
   pop() {
     return this.#nodes.shift()
+  }
+  size() {
+    return this.#nodes.length
+  }
+
+  peek() {
+    return this.#nodes[0]
+  }
+
+  isEmpty() {
+    return this.#nodes.length === 0
   }
 }
