@@ -16,19 +16,57 @@ class HashMap {
     return hashCode
   }
 
+  getCapacity() {
+    let counter = 0
+    for (let i = 0; i < this.table.length; i++) {
+      if (this.table[i] !== undefined && this.table[i].head !== null) {
+        counter++
+      }
+    }
+    return (counter * 100) / this.size / 100
+  }
+
+  growTable() {
+    const oldTable = this.table
+    this.size *= 2
+    this.table = new Array(this.size)
+    for (let i = 0; i < oldTable.length; i++) {
+      const oldBucket = oldTable[i]
+      if (oldBucket !== undefined && oldBucket.head !== null) {
+        let current = oldBucket.head
+        while (current !== null) {
+          const newHash = this.hash(current.key)
+          if (this.table[newHash] === undefined) {
+            this.table[newHash] = new LinkedList()
+          }
+          this.table[newHash].append(current.key, current.value)
+          current = current.next
+        }
+      }
+    }
+  }
+
   set(key, value) {
+    const currentCapacity = this.getCapacity()
+    if (currentCapacity > this.loadFactor) {
+      this.growTable()
+    }
+
     const hashedKey = this.hash(key)
     let bucket = this.table[hashedKey]
     if (bucket === undefined) {
       bucket = new LinkedList()
       bucket.append(key, value)
       this.table[hashedKey] = bucket
+      return
     } else {
       const node = bucket.find(key)
       if (node === null) {
         bucket.append(key, value)
+        return
       } else {
         node.value = value
+        return
       }
     }
   }
@@ -181,18 +219,6 @@ class LinkedList {
     }
   }
 
-  prepend(key, value) {
-    if (this.head === null) {
-      this.head = new Node(key, value)
-      return
-    } else {
-      let newNode = new Node(key, value)
-      newNode.next = this.head
-      this.head = newNode
-      return
-    }
-  }
-
   size() {
     let counter = 0
     if (this.head === null) {
@@ -205,63 +231,6 @@ class LinkedList {
       }
       return counter
     }
-  }
-
-  getHead() {
-    return this.head
-  }
-
-  getTail() {
-    let last = this.head
-    while (last.next !== null) {
-      last = last.next
-    }
-    return last
-  }
-
-  at(index) {
-    let current = this.head
-    if (index < 0) {
-      return 'index must be positive'
-    }
-
-    if (current === null) {
-      return 'list is empty'
-    }
-
-    let counter = 0
-    while (current !== null) {
-      if (counter === index) {
-        return current
-      } else {
-        counter++
-        current = current.next
-      }
-    }
-
-    return 'Not a valid index'
-  }
-
-  pop() {
-    let current = this.head
-    if (current === null) {
-      return 'list is empty'
-    }
-
-    if (current.next === null) {
-      this.head = null
-      return
-    }
-
-    let previous = null
-
-    while (current.next !== null) {
-      previous = current
-      current = current.next
-    }
-
-    previous.next = null
-    return
   }
 
   contains(key) {
@@ -293,59 +262,5 @@ class LinkedList {
       }
     }
     return null
-  }
-
-  toString() {
-    let result = ''
-    let current = this.head
-    while (current !== null) {
-      result += `${current.value} -> `
-      current = current.next
-    }
-
-    result += 'null'
-    return result
-  }
-
-  insertAt(key, value, index) {
-    if (index === 0) {
-      return this.prepend(key, value)
-    }
-    let length = this.size()
-
-    if (index < 0 || index > length - 1) {
-      return `Index must be between 0 and ${length - 1}`
-    }
-
-    if (index === length) {
-      this.append(key, value)
-      return
-    }
-
-    const newNode = new Node(key, value)
-    let previousNode = this.at(index - 1)
-    newNode.next = previousNode.next
-    previousNode.next = newNode
-    return
-  }
-
-  removeAt(index) {
-    if (index === 0) {
-      return (this.head = this.head.next)
-    }
-
-    let length = this.size()
-    if (index < 0 || index > length - 1) {
-      return `Index must be between 0 and ${length - 1}`
-    }
-
-    if (index === length - 1) {
-      this.pop()
-      return
-    }
-
-    const previousNode = this.at(index - 1)
-    previousNode.next = previousNode.next.next
-    return
   }
 }
