@@ -8,13 +8,13 @@ let firstrightFirstLeft = [9, 23]
 let firstrightFirstRight = [324, 6345]
 
 /*
-                                         8
+                                         12
                                        /   \
-                                     4      67
+                                     5      15
                                    /  \    /  \
-                                 1     5  9    324  
-                                  \     \  \     \
-                                   3     7  23   6345 
+                                 3     7  13    17  
+                                /       \        \
+                               1         9       19 
                                                 
                                                  
                                                   

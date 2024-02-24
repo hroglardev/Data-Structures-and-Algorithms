@@ -140,8 +140,63 @@ class Tree {
       return
     }
   }
-  preOrder(callback) {}
-  postOrder(callback) {}
+  preOrder(callback, root = this.root, arr = []) {
+    if (this.root === null) {
+      return arr
+    }
+    if (callback === undefined) {
+      if (root === null) {
+        return
+      }
+      arr.push(root.value)
+      if (root.left !== null) {
+        this.preOrder(...[,], root.left, arr)
+      }
+      if (root.right !== null) {
+        this.preOrder(...[,], root.right, arr)
+      }
+      console.log(arr)
+      return arr
+    } else {
+      callback(root)
+      if (root.left !== null) {
+        this.preOrder(callback, root.left, ...[,])
+      }
+      if (root.right !== null) {
+        this.preOrder(callback, root.right, ...[,])
+      }
+      return
+    }
+  }
+  postOrder(callback, root = this.root, arr = []) {
+    if (this.root === null) {
+      return arr
+    }
+    if (callback === undefined) {
+      if (root === null) {
+        return
+      }
+
+      if (root.left !== null) {
+        this.postOrder(...[,], root.left, arr)
+      }
+      if (root.right !== null) {
+        this.postOrder(...[,], root.right, arr)
+      }
+      arr.push(root.value)
+      console.log(arr)
+      return arr
+    } else {
+      if (root.left !== null) {
+        this.postOrder(callback, root.left, ...[,])
+      }
+      if (root.right !== null) {
+        this.postOrder(callback, root.right, ...[,])
+      }
+      callback(root)
+      return
+    }
+  }
 }
 
 class Node {
@@ -204,4 +259,5 @@ const printNode = (node) => {
   console.log(node.value)
 }
 
-myTree.inOrder(printNode)
+myTree.postOrder(printNode)
+// 1, 6, 5, 3, 13, 12, 17, 15, 9
