@@ -1,7 +1,3 @@
-let array = [8, 8, 5, 4, 3, 2, 1, 9, 8, 2, 5]
-let sortAndRemoveDuplicates = [...new Set(array.sort((a, b) => a - b))]
-let sorted = [1, 3, 4, 5, 7, 8, 9, 23, 67, 324, 6345]
-
 class Tree {
   constructor(array) {
     this.sortAndRemoveDuplicates = [...new Set(array.sort((a, b) => a - b))]
@@ -197,6 +193,52 @@ class Tree {
       return
     }
   }
+
+  height(node) {
+    if (node === null) {
+      return -1
+    }
+
+    let leftHeight = this.height(node.left)
+    let rightHeight = this.height(node.right)
+
+    return Math.max(leftHeight, rightHeight) + 1
+  }
+
+  depth(node, current = this.root, depth = 0) {
+    if (node === null) {
+      return -1
+    }
+    if (node.value === current.value) {
+      return depth
+    } else {
+      if (node.value < current.value) {
+        return this.depth(node, current.left, depth + 1)
+      } else {
+        return this.depth(node, current.right, depth + 1)
+      }
+    }
+  }
+
+  isBalanced() {
+    return this.isBalancedNode(this.root)
+  }
+
+  isBalancedNode(node) {
+    if (node === null) {
+      return true
+    }
+    const leftHeight = this.height(node.left)
+    const rightHeight = this.height(node.right)
+
+    const balanceFactor = Math.abs(leftHeight - rightHeight)
+    return balanceFactor <= 1 && this.isBalancedNode(node.left) && this.isBalancedNode(node.right)
+  }
+
+  rebalance() {
+    const newArr = [...new Set(this.levelOrder().sort((a, b) => a - b))]
+    this.root = this.buildTree(newArr, 0, newArr.length - 1)
+  }
 }
 
 class Node {
@@ -246,18 +288,3 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
     prettyPrint(node.left, `${prefix}${isLeft ? '    ' : '│   '}`, true)
   }
 }
-
-const myTree = new Tree([12, 5, 3, 1, 7, 9, 15, 13, 17, 19])
-myTree.insert(6)
-myTree.insert(18)
-myTree.insert(19)
-myTree.delete(7)
-myTree.find(3)
-prettyPrint(myTree.root)
-
-const printNode = (node) => {
-  console.log(node.value)
-}
-
-myTree.postOrder(printNode)
-// 1, 6, 5, 3, 13, 12, 17, 15, 9
