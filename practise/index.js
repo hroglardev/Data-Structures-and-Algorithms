@@ -1,29 +1,39 @@
-const factorial = (number) => {
-  if (number < 0) return "Number can't be negative"
-  if (number === 0) return 1
-  if (number === 1 || number === 2) return number
+let array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
+let sortAndRemoveDuplicates = [...new Set(array.sort((a, b) => a - b))]
+let sorted = [1, 3, 4, 5, 7, 8, 9, 23, 67, 324, 6345]
+let firstLeft = [1, 3, 4, 5, 7]
+let firstRight = [9, 23, 67, 324, 6345]
 
-  return number * factorial(number - 1)
-}
+let firstrightFirstLeft = [9, 23]
+let firstrightFirstRight = [324, 6345]
 
-const loopFactorial = (number) => {
-  if (number < 0) return "Number can't be negative"
-  if (number === 0) return 1
-  if (number === 1 || number === 2) return number
-  let result = 1
-  for (let i = 1; i <= number; i++) {
-    result *= i
+/*
+                                         8
+                                       /   \
+                                     4      67
+                                   /  \    /  \
+                                 1     5  9    324  
+                                  \     \  \     \
+                                   3     7  23   6345 
+                                                
+                                                 
+                                                  
+                                                  
+*/
+
+class Tree {
+  constructor(array) {
+    this.sortAndRemoveDuplicates = [...new Set(array.sort((a, b) => a - b))]
+    this.root = sortAndRemoveDuplicates[Math.floor(sortAndRemoveDuplicates.length / 2)]
+    this.left = null
+    this.right = null
   }
-  return result
+
+  buildTree(array) {
+    if (array.length === 0) return null
+    const middle = Math.floor(array.length / 2)
+    const newNode = new Tree(array[middle])
+  }
 }
 
-console.log(loopFactorial(-1))
-console.log(loopFactorial(0))
-console.log(loopFactorial(1))
-console.log(loopFactorial(2))
-
-console.log(loopFactorial(3))
-
-console.log(loopFactorial(4))
-console.log(loopFactorial(5))
-console.log(loopFactorial(6))
+console.log(sortAndRemoveDuplicates)
