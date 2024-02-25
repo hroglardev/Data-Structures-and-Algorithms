@@ -11,4 +11,8 @@ export class Node {
   setVisited() {
     this.isVisited = true
   }
+
+  removeVisited() {
+    this.isVisited = false
+  }
 }

@@ -48,8 +48,32 @@ class ChessBoard {
       }
     }
   }
+
+  knightMoves(startX, startY, targetX, targetY) {
+    const startNode = this.getNode(startX, startY)
+    const targetNode = this.getNode(targetX, targetY)
+
+    const queue = [{ node: startNode, path: [[startNode.x, startNode.y]] }]
+    startNode.setVisited()
+
+    while (queue.length > 0) {
+      const { node, path } = queue.shift()
+
+      if (node === targetNode) {
+        console.log(`Congrats you made it in ${path.length - 1} moves. Here's your path`, path)
+        return path
+      }
+
+      for (const connection of node.connections) {
+        if (!connection.isVisited) {
+          connection.setVisited()
+          queue.push({ node: connection, path: path.concat([[connection.x, connection.y]]) })
+        }
+      }
+    }
+    return null
+  }
 }
 
 const myBoard = new ChessBoard()
-
-console.log(myBoard.board)
+myBoard.knightMoves(0, 0, 7, 7)
